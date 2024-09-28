@@ -65,12 +65,10 @@ def __parse_data(data: list[dict]) -> list[dict]:
     parsed_data = []
 
     for row in data:
-        # Parse individual fields
+
         parsed_row = {
             "field": (
-                ast.literal_eval(row["field"])
-                if isinstance(row["field"], str) and row["field"].startswith("[")
-                else row["field"]
+                row["field"].strip("[]").split(",") if "[" in row["field"] else row["field"]
             ),
             "check_type": row["check_type"],
             "value": None if row["value"] == "NULL" else row["value"],

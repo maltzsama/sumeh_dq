@@ -2,9 +2,9 @@ field;check_type;value;threshold;execute;updated_at
 name;is_complete;NULL;NULL;true;21/09/2024
 id;is_unique;NULL;0.9;true;21/09/2024
 id;is_primary_key;NULL;0.10;true;21/09/2024
-["id","name"];are_complete;NULL;0.11;true;21/09/2024
-["id","email"];are_unique;NULL;0.12;true;21/09/2024
-["id","email"];is_composite_key;NULL;0.13;true;21/09/2024
+[id,name];are_complete;NULL;0.11;true;21/09/2024
+[id,email];are_unique;NULL;0.12;true;21/09/2024
+[id,email];is_composite_key;NULL;0.13;true;21/09/2024
 age;is_greater_than;18;0.14;true;21/09/2024
 salary;is_positive;NULL;0.15;true;21/09/2024
 performance;is_negative;NULL;0.16;true;21/09/2024
