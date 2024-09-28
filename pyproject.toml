@@ -28,6 +28,9 @@ dev = [
     "pytest",  # testing
     "ruff"  # linting
 ]
+aws = [
+    "boto3"
+]
 
 [project.urls]
 
