@@ -29,7 +29,6 @@ salary;has_infogain;NULL;0.35;true;21/09/2024
 salary;has_max_by;age;0.36;true;21/09/2024
 salary;has_min_by;age;0.37;true;21/09/2024
 salary;has_correlation;age;0.38;true;21/09/2024
-salary;has_entropy;1.5;0.39;true;21/09/2024
 salary;is_inside_interquartile_range;NULL;0.40;true;21/09/2024
 salary;is_in_millions;NULL;0.41;true;21/09/2024
 salary;is_in_billions;NULL;0.42;true;21/09/2024
@@ -50,7 +49,7 @@ last_updated;is_on_saturday;NULL;NULL;true;21/09/2024
 last_updated;is_on_sunday;NULL;NULL;true;21/09/2024
 last_updated;is_on_schedule;["09:00","17:00"];NULL;true;21/09/2024
 last_updated;is_daily;NULL;NULL;true;21/09/2024
-["name","age","gender"];has_workflow;NULL;NULL;true;21/09/2024
+[name,age,gender];has_workflow;NULL;NULL;true;21/09/2024
 country;iso_4217;NULL;NULL;true;21/09/2024
 currency;iso_3166;NULL;NULL;true;21/09/2024
 email;has_pattern;^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$;0.26;true;21/09/2024

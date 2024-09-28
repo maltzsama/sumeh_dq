@@ -105,6 +105,22 @@ def quality(df, file_path, kind, name="Data Quality Checks", delimiter=";"):
                 value = __convert_value(rule["value"])
                 check = check.has_mean(field, value)
 
+            case "has_sum":
+                value = __convert_value(rule["value"])
+                check = check.has_sum(field, value)
+
+            case "has_cardinality":
+                value = __convert_value(rule["value"])
+                check = check.has_cardinality(field, value)
+
+            case "has_infogain":
+                value = __convert_value(rule["value"])
+                check = check.has_infogain(field, value)
+
+            case "has_max_by":
+                value = __convert_value(rule["value"])
+                check = check.has_max_by(field, value)
+
             case "has_entropy":
                 value = __convert_value(rule["value"])
                 check = check.has_entropy(field, value)
@@ -127,14 +143,42 @@ def quality(df, file_path, kind, name="Data Quality Checks", delimiter=";"):
             case "is_today":
                 check = check.is_today(field, pct=threshold)
 
+            case "is_yesterday":
+                check = check.is_yesterday(field, pct=threshold)
+
+            case "is_on_weekday":
+                check = check.is_on_weekday(field, pct=threshold)
+
+            case "is_on_weekend":
+                check = check.is_on_weekend(field, pct=threshold)
+
+            case "is_on_monday":
+                check = check.is_on_monday(field, pct=threshold)
+
+            case "is_on_tuesday":
+                check = check.is_on_tuesday(field, pct=threshold)
+
+            case "is_on_wednesday":
+                check = check.is_on_wednesday(field, pct=threshold)
+
+            case "is_on_thursday":
+                check = check.is_on_thursday(field, pct=threshold)
+
+            case "is_on_friday":
+                check = check.is_on_friday(field, pct=threshold)
+
+            case "is_on_saturday":
+                check = check.is_on_saturday(field, pct=threshold)
+
+            case "is_on_sunday":
+                check = check.is_on_sunday(field, pct=threshold)
+
             case "satisfies":
-                predicate = rule["predicate"]
+                predicate = rule["value"]
                 check = check.satisfies(field, predicate, pct=threshold)
 
             case _:
                 warnings.warn(f"Unknown rule name: {rule_name}")
-
-
 
     quality_check = check.validate(df)
     return quality_check

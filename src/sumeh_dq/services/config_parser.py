@@ -59,9 +59,7 @@ def __read_json_file(file_content: str):
 
 
 def __parse_data(data: list[dict]) -> list[dict]:
-    import ast
     from datetime import datetime
-
     parsed_data = []
 
     for row in data:
