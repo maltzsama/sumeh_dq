@@ -51,7 +51,6 @@ clean-test: ## remove test and coverage artifacts
 lint/flake8: ## check style with flake8
 	flake8 sumeh_dq tests
 
-
 lint: lint/flake8 ## check style
 
 test: ## run tests quickly with the default Python
@@ -81,9 +80,11 @@ release: dist ## package and upload a release
 	twine upload dist/*
 
 dist: clean ## builds source and wheel package
-	python setup.py sdist
-	python setup.py bdist_wheel
+	python -m build
 	ls -l dist
 
 install: clean ## install the package to the active Python's site-packages
-	python setup.py install
+	pip install .
+
+pypi-test: dist ## package and upload a release to TestPyPI
+	twine upload --repository testpypi dist/*

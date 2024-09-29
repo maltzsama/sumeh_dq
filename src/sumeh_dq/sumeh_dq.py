@@ -8,7 +8,7 @@ from .services.utils import __convert_value
 
 def quality(df, file_path, kind, name="Data Quality Checks", delimiter=";"):
 
-    dq_rules = get_config(kind=kind, file_path=file_path, delimiter=delimiter)
+    dq_rules = get_config(source_type=kind, source=file_path, delimiter=delimiter)
 
     check = Check(CheckLevel.WARNING, name)
 
@@ -114,12 +114,7 @@ def quality(df, file_path, kind, name="Data Quality Checks", delimiter=";"):
                 check = check.has_cardinality(field, value)
 
             case "has_infogain":
-                value = __convert_value(rule["value"])
-                check = check.has_infogain(field, value)
-
-            case "has_max_by":
-                value = __convert_value(rule["value"])
-                check = check.has_max_by(field, value)
+                check = check.has_infogain(field, pct=threshold)
 
             case "has_entropy":
                 value = __convert_value(rule["value"])

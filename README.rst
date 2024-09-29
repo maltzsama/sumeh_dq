@@ -6,9 +6,6 @@ Sumeh DQ
 .. image:: https://img.shields.io/pypi/v/sumeh_dq.svg
         :target: https://pypi.python.org/pypi/sumeh_dq
 
-.. image:: https://img.shields.io/travis/maltzsama/sumeh_dq.svg
-        :target: https://travis-ci.com/maltzsama/sumeh_dq
-
 .. image:: https://readthedocs.org/projects/sumeh-dq/badge/?version=latest
         :target: https://sumeh-dq.readthedocs.io/en/latest/?version=latest
         :alt: Documentation Status
