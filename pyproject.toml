@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sumeh_dq"
-version = "0.1.0"
+version = "0"
 description = "Sumeh is a project designed to extend the functionality of the Cuallee library by enabling the use of configuration"
 readme = "README.rst"
 authors = [
@@ -18,7 +18,8 @@ classifiers = [
 ]
 license = {text = "BSD license"}
 dependencies = [
-    "cuallee >= 0.14.1"
+    "cuallee >= 0.14.1",
+    "python-dateutil"
 ]
 
 [project.optional-dependencies]
@@ -27,6 +28,23 @@ dev = [
     "mypy",  # linting
     "pytest",  # testing
     "ruff"  # linting
+]
+
+aws = [
+    "boto3"
+]
+mysql = [
+    "mysql-connector-python",
+    "pandas"
+]
+
+postgresql = [
+    "psycopg2-binary",
+    "pandas"
+]
+
+bigquery = [
+    "google-cloud-bigquery"
 ]
 
 [project.urls]
@@ -40,9 +58,6 @@ package-dir = {"" = "src"}
 
 [tool.setuptools.package-data]
 "*" = ["*.*"]
-
-
-
 
 # Mypy
 # ----
@@ -60,4 +75,3 @@ warn_no_return = true
 module = "tests.*"
 allow_untyped_defs = true
 disable_error_code = "attr-defined"
-
