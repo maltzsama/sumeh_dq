@@ -3,12 +3,28 @@
 import warnings
 
 from cuallee import Check, CheckLevel
+
 from .services.config_parser import get_config
 from .services.utils import __convert_value
 
-def quality(df, file_path, kind, name="Data Quality Checks", delimiter=";"):
 
-    dq_rules = get_config(source_type=kind, source=file_path, delimiter=delimiter)
+def quality(
+    df,
+    source_type,
+    file_path,
+    name="Data Quality Checks",
+    connection=None,
+    database_config: dict = None,
+    delimiter=";",
+):
+
+    dq_rules = get_config(
+        source_type=source_type,
+        source=file_path,
+        delimiter=delimiter,
+        connection=connection,
+        database_config=database_config,
+    )
 
     check = Check(CheckLevel.WARNING, name)
 
