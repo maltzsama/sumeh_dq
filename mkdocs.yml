@@ -1,0 +1,64 @@
+# Project information
+site_name: Sumeh DQ
+site_description: "Sumeh is a project designed to extend the functionality of the Cuallee library by enabling the use of configuration."
+site_author: Demetrius Albuquerque
+site_url: https://sumeh-dq.readthedocs.io
+
+# Configuration
+theme:
+  name: mkdocs
+  palette:
+    primary: 'indigo'
+    accent: 'indigo'
+  features:
+    - navigation.instant
+  logo: 'images/logo.png'  # Optional: place a logo in your docs folder
+  favicon: 'images/favicon.ico'  # Optional: place a favicon in your docs folder
+
+# Repo Information
+repo_name: maltzsama/sumeh_dq
+repo_url: https://github.com/maltzsama/sumeh_dq
+edit_uri: ""
+
+# Markdown Extensions
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+  - tables
+
+# Badges (this will be part of your documentation index.md or home page)
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/maltzsama/sumeh_dq
+    - icon: fontawesome/brands/readthedocs
+      link: https://sumeh-dq.readthedocs.io
+
+# Navigation
+nav:
+  - Home: index.md
+  - Features: features.md
+  - Installation: installation.md
+  - Usage: usage.md
+  - Contributing: contributing.md
+  - Authors: authors.md
+
+# Files to include in the documentation
+extra_css:
+  - css/custom.css  # Optional: create a custom stylesheet
+
+# Plugin to enable search functionality in the docs
+plugins:
+  - search
+
+# Exclude unnecessary files from being built into the documentation
+exclude:
+  - README.rst
+  - pyproject.toml
+  - docs/requirements.txt
+
+# Site configuration for deployment
+site_dir: "site"
+docs_dir: "docs"
+

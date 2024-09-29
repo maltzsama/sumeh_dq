@@ -16,7 +16,7 @@ maintainers = [
 classifiers = [
 
 ]
-license = {text = "BSD license"}
+license = {text = "Apache license"}
 dependencies = [
     "cuallee >= 0.14.1",
     "python-dateutil"
@@ -55,6 +55,7 @@ homepage = "https://github.com/maltzsama/sumeh_dq"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
+packages = ["sumeh_dq"]  # Replace with your actual package name
 
 [tool.setuptools.package-data]
 "*" = ["*.*"]
@@ -75,3 +76,8 @@ warn_no_return = true
 module = "tests.*"
 allow_untyped_defs = true
 disable_error_code = "attr-defined"
+
+[python.install]
+path = "src"
+requirements = ["src"]
+
