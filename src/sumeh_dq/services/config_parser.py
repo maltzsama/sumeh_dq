@@ -58,7 +58,8 @@ def __read_json_file(file_content: str):
     return __parse_data(json.loads(file_content))
 
 def __parse_data(data: list[dict]) -> list[dict]:
-    from datetime import datetime
+    from dateutil import parser
+
     parsed_data = []
 
     for row in data:
@@ -74,7 +75,7 @@ def __parse_data(data: list[dict]) -> list[dict]:
             "execute": (
                 row["execute"].lower() == "true" if isinstance(row["execute"], str) else row["execute"] is True
             ),
-            "updated_at": datetime.strptime(row["updated_at"], "%d/%m/%Y"),
+            "updated_at": parser.parse(row["updated_at"]),
         }
         parsed_data.append(parsed_row)
 
@@ -88,21 +89,53 @@ def __read_database(source_type: str, database_config: dict) -> list[dict]:
     schema = database_config['schema']
 
     if source_type == "mysql":
-        import mysql.connector
+        try:
+            import mysql.connector
+            import pandas as pd
+        except ImportError:
+            raise ImportError(
+                "mysql-connector-python is required to use MySQL as a source. "
+                "You can install using 'pip install sumeh_dq[mysql]'"
+                "OR"
+                "Install it using 'pip install mysql-connector-python'."
+                "You will need pandas too"
+                "Install it using 'pip install pandas'"
+            )
 
         connection = mysql.connector.connect(**{k: v for k, v in database_config.items() if k not in ['schema', 'table']})
         query = f"SELECT * FROM {schema}.{table}"  # Specify your query
         data = pd.read_sql(query, connection)
         connection.close()
     elif source_type == "postgresql":
-        import psycopg2
+        try:
+            import pandas as pd
+            import psycopg2
+        except ImportError:
+            raise ImportError(
+                "psycopg2 is required to use Postgresql as a source. "
+                "You can install using 'pip install sumeh_dq[postgresql]'"
+                "OR"
+                "Install it using 'pip install psycopg2'."
+                "OR"
+                "Install it using 'pip install psycopg2-binary'."
+                "You will need pandas too"
+                "Install it using 'pip install pandas'"
+            )
+
 
         connection = psycopg2.connect(**{k: v for k, v in database_config.items() if k not in ['schema', 'table']})
         query = f"SELECT * FROM {schema}.{table}"  # Specify your query
         data = pd.read_sql(query, connection)
         connection.close()
     elif source_type == "bigquery":
-        from google.cloud import bigquery
+        try:
+            from google.cloud import bigquery
+        except ImportError:
+            raise ImportError(
+                "google-cloud-bigquery is required to use BigQuery as a source. "
+                "Install it using 'pip install sumeh_dq[bigquery]'."
+                "Install it using 'pip install google-cloud-bigquery'."
+            )
 
         client = bigquery.Client()
         query = f"SELECT * FROM `{schema}.{table}`"  # Specify your query

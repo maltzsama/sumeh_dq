@@ -34,11 +34,13 @@ aws = [
     "boto3"
 ]
 mysql = [
-    "mysql-connector-python"
+    "mysql-connector-python",
+    "pandas"
 ]
 
 postgresql = [
-    "psycopg2-binary"
+    "psycopg2-binary",
+    "pandas"
 ]
 
 bigquery = [
