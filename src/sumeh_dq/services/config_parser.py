@@ -4,13 +4,13 @@
 from io import StringIO
 import pandas as pd
 
-def get_config(source_type: str, source: str, delimiter: str = ";", database_config: dict = None):
+def get_config(source_type: str, source: str, delimiter: str = ";", database_config: dict = None, connection=None):
     if source.startswith("s3://"):
         file_content = __read_s3_file(source)
     elif source_type in ["mysql", "postgresql", "bigquery"]:
         if database_config is None:
             raise ValueError("database_config must be provided for database sources.")
-        data = __read_database(source_type, database_config)
+        data = __read_database(source_type, database_config, connection)
         return __parse_data(data)
     else:
         file_content = __read_local_file(source)
@@ -81,66 +81,78 @@ def __parse_data(data: list[dict]) -> list[dict]:
 
     return parsed_data
 
-def __read_database(source_type: str, database_config: dict) -> list[dict]:
+def __read_database(source_type: str, database_config: dict, connection=None) -> list[dict]:
     if 'schema' not in database_config or 'table' not in database_config:
         raise ValueError("database_config must include 'schema' and 'table'.")
 
-    table = database_config['table']
     schema = database_config['schema']
+    table = database_config['table']
+    query = f"SELECT * FROM {schema}.{table}"
 
     if source_type == "mysql":
-        try:
-            import mysql.connector
-            import pandas as pd
-        except ImportError:
-            raise ImportError(
-                "mysql-connector-python is required to use MySQL as a source. "
-                "You can install using 'pip install sumeh_dq[mysql]'"
-                "OR"
-                "Install it using 'pip install mysql-connector-python'."
-                "You will need pandas too"
-                "Install it using 'pip install pandas'"
-            )
-
-        connection = mysql.connector.connect(**{k: v for k, v in database_config.items() if k not in ['schema', 'table']})
-        query = f"SELECT * FROM {schema}.{table}"  # Specify your query
-        data = pd.read_sql(query, connection)
-        connection.close()
+        data = __read_mysql(database_config, query, connection)
     elif source_type == "postgresql":
-        try:
-            import pandas as pd
-            import psycopg2
-        except ImportError:
-            raise ImportError(
-                "psycopg2 is required to use Postgresql as a source. "
-                "You can install using 'pip install sumeh_dq[postgresql]'"
-                "OR"
-                "Install it using 'pip install psycopg2'."
-                "OR"
-                "Install it using 'pip install psycopg2-binary'."
-                "You will need pandas too"
-                "Install it using 'pip install pandas'"
-            )
-
-
-        connection = psycopg2.connect(**{k: v for k, v in database_config.items() if k not in ['schema', 'table']})
-        query = f"SELECT * FROM {schema}.{table}"  # Specify your query
-        data = pd.read_sql(query, connection)
-        connection.close()
+        data = __read_postgresql(database_config, query, connection)
     elif source_type == "bigquery":
-        try:
-            from google.cloud import bigquery
-        except ImportError:
-            raise ImportError(
-                "google-cloud-bigquery is required to use BigQuery as a source. "
-                "Install it using 'pip install sumeh_dq[bigquery]'."
-                "Install it using 'pip install google-cloud-bigquery'."
-            )
-
-        client = bigquery.Client()
-        query = f"SELECT * FROM `{schema}.{table}`"  # Specify your query
-        data = client.query(query).to_dataframe()
+        data = __read_bigquery(schema, table)
     else:
         raise ValueError(f"Unsupported source_type: {source_type}")
 
-    return data.to_dict(orient="records")  # Convert DataFrame to a list of dictionaries
+    return data.to_dict(orient="records")
+
+
+def __read_mysql(database_config: dict, query: str, connection=None):
+    try:
+        import mysql.connector
+        import pandas as pd
+    except ImportError:
+        raise ImportError(
+            "mysql-connector-python is required to use MySQL as a source. "
+            "Install it using 'pip install sumeh_dq[mysql]' or 'pip install mysql-connector-python'. "
+            "You will also need pandas: 'pip install pandas'."
+        )
+
+    if connection is None:
+        connection = mysql.connector.connect(
+            **{k: v for k, v in database_config.items() if k not in ['schema', 'table']}
+        )
+
+    data = pd.read_sql(query, connection)
+    connection.close()
+    return data
+
+
+def __read_postgresql(database_config: dict, query: str, connection=None):
+    try:
+        import psycopg2
+        import pandas as pd
+    except ImportError:
+        raise ImportError(
+            "psycopg2 is required to use PostgreSQL as a source. "
+            "Install it using 'pip install sumeh_dq[postgresql]' or 'pip install psycopg2-binary'. "
+            "You will also need pandas: 'pip install pandas'."
+        )
+
+    if connection is None:
+        connection = psycopg2.connect(
+            **{k: v for k, v in database_config.items() if k not in ['schema', 'table']}
+        )
+
+    data = pd.read_sql(query, connection)
+    connection.close()
+    return data
+
+
+def __read_bigquery(schema: str, table: str):
+    try:
+        from google.cloud import bigquery
+    except ImportError:
+        raise ImportError(
+            "google-cloud-bigquery is required to use BigQuery as a source. "
+            "Install it using 'pip install sumeh_dq[bigquery]' or 'pip install google-cloud-bigquery'."
+        )
+
+    client = bigquery.Client()
+    query = f"SELECT * FROM `{schema}.{table}`"
+    data = client.query(query).to_dataframe()
+    return data
