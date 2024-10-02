@@ -4,9 +4,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sumeh_dq"
-version = "0"
+version = "0.1.0"
 description = "Sumeh is a project designed to extend the functionality of the Cuallee library by enabling the use of configuration"
-readme = "README.rst"
+readme = "README.md"
 authors = [
   {name = "Demetrius Albuquerque", email = "demetrius.albuquerque@yahoo.com.br"}
 ]

@@ -11,7 +11,7 @@ from .services.utils import __convert_value
 def quality(
     df,
     source_type,
-    file_path,
+    file_path=None,
     name="Data Quality Checks",
     connection=None,
     database_config: dict = None,
